@@ -1,11 +1,11 @@
 <?php
 /*
- * 
+ *
  * This file is an example of using the PHPLIB framework in your own scripts.
  * The phplib.bootstrap.php file is the one you want to include.
  * Make sure to check the config settings in phplib.config.php,
  * that everything there is accurate.
- * 
+ *
  * Currently, this file runs debug tests as part of the development process.
  */
 define( 'DS', DIRECTORY_SEPARATOR );
@@ -16,8 +16,8 @@ include_once ROOTPATH."phplib.bootstrap.php";   ////Defines constants, Utility, 
 
 use PHPLIB\Utility;
 use PHPLIB\EMPTYSTRING;
-    
-function debug($msgObj, $title = EMPTYSTRING, $verbose = false) 
+
+function debug($msgObj, $title = EMPTYSTRING, $verbose = false)
     { Utility::debug($msgObj, $title, $verbose); }
 
 //$PHPLibConfig = new PHPLIB\LibConfig();
@@ -25,11 +25,11 @@ $PHPLibConfig = Utility::getMemoryResource("FrameworkConfig");
 
 //debug
 if ($PHPLibConfig->debug) {
-    
+
     $obj = Utility::newObject();
     $obj->go = function() { debug("GO!!!!"); };
     //debug( $obj->go() );
-    
+
     /* OS/Server */
     debug( php_uname("s"), "php_uname('s')");
     debug( PHP_OS, "PHP_OS");
@@ -40,7 +40,7 @@ if ($PHPLibConfig->debug) {
 
     /* isEmpty test */
     //$testVar = "0";
-    //if (Utility::isEmpty($testVar)) { debug( "'$testVar' is empty" ); } 
+    //if (Utility::isEmpty($testVar)) { debug( "'$testVar' is empty" ); }
     //else { debug( "'$testVar' is not empty" ); }
 
     $testVar = array();
@@ -50,47 +50,47 @@ if ($PHPLibConfig->debug) {
     $testVar = (object)(array("test"=>true));
     debug( $testVar, "(object)(\$newParams)" );
     /**/
-    
-    
+
+
     /* File path debugs */
     debug( __FILE__, "__FILE__" );
     debug( $_SERVER, "\$_SERVER" );
-    
+
     //debug( pathinfo( 'http://microcms/?debug=1#yo' ), "pathinfo('http://microcms/?debug=1#yo')" );
-    //debug( pathinfo( 
-            //'C:\\pd.microcms\\index.php?debug=1#yo' ), 
-            //"pathinfo('C:\\pd.microcms\\index.php?debug=1#yo')" 
+    //debug( pathinfo(
+            //'C:\\pd.microcms\\index.php?debug=1#yo' ),
+            //"pathinfo('C:\\pd.microcms\\index.php?debug=1#yo')"
         //);
 
     //debug( dirname($_SERVER['SCRIPT_NAME']), "dirname(\$_SERVER['SCRIPT_NAME'])" );
     debug( basename($_SERVER['SCRIPT_NAME']), "basename(\$_SERVER['SCRIPT_NAME'])" );
     /**/
-    
-    
-    /*  Test urls */ 
+
+
+    /*  Test urls */
     $url = "http://username:password@pd.microcms/index.php?debug=1#yo";
     $url = 'http://username:password@pd.microcms/do/includes/damnit/index.php?debug=1#yo';
     //$url = __FILE__;
     //$url = $_SERVER['REQUEST_URI'];
     debug( $url, "current testing url" );
     /**/
-    
-    
-    /* Url Parsing tests 
+
+
+    /* Url Parsing tests
     $parseUrl = parse_url($url);
     $pathInfo = pathinfo($url);
     $parseUrl = array_merge($parseUrl, $pathInfo);
     debug( $parseUrl, "parse_url()+pathinfo()" );
     */
-    
-    
+
+
     /* Higher level Path processing */
     Utility::loadLib(array("string", "url.class"));  //Includes String, Path, Dictionary, Querystring
     //use PHPLIB\Path;
     //use PHPLIB\Url;
     //use PHPLIB\Querystring;
-    
-    
+
+
     $path = new PHPLIB\Path($url);
     debug( $path->getPathInfo(), "\$path->getPathInfo()" );
     debug( $path->goUpOneLevel(), "\$path->goUpOneLevel()" );
@@ -107,8 +107,8 @@ if ($PHPLibConfig->debug) {
     debug($qs->toString(), "QueryString->toString()");
     debug($qs->Items(), "QueryString->Items()");
     /**/
-    
-    
+
+
     /* Closures processing */
     Utility::loadLib(array("closures", "hash"));
     Utility::loadLib(array("closures", "string"));
@@ -119,18 +119,18 @@ if ($PHPLibConfig->debug) {
     debug( $testQsArr, "\$testQsArr" );
     $QSImploder = PHPLIB\Closures\Hash::toString( "&", "=" );
     $QSExploder = PHPLIB\Closures\String::toHash( "&", "=" );
-    
+
     $qs = $QSImploder( $testQsArr );
     debug( $qs, "PHPLIB\Closures\Hash::toString( \"&\", \"=\" )( \$testQsArr )" );
-    
+
     $testQsArr = $QSExploder( $qs );
     debug( $testQsArr, "PHPLIB\Closures\String::toHash( \"&\", \"=\" )( \$qs )" );
     /**/
-    
+
     /* String class tests */
     $spacers = array(
-        "AND", 
-        'OR', 
+        "AND",
+        'OR',
         );
     $attribs = array(
         "UPDATE tablename set active = '1' where (id <> 1 ",                        //AND
@@ -138,20 +138,20 @@ if ($PHPLibConfig->debug) {
         array( ' id <> 23) ',                //OR
             ' (StartDate = \'6/12/31\' ',      //AND
             ' EndDate = \'6/13/31\' ',          //AND
-            ),             
-        array(  
-            ' (h <> NULL ',                   //OR      
+            ),
+        array(
+            ' (h <> NULL ',                   //OR
             ' g == NULL)) '
             )
         );
-    
+
     debug( $attribs, "\$attribs" );
     debug( $spacers, "\$attribs spacers" );
     $attribs = PHPLIB\String::multiImplode($spacers, $attribs);
     debug( $attribs, "String::multiImplode(\$attribs)" );
     /**/
-    
-    
+
+
     /* HTML class tests */
     Utility::loadLib(array("closures", "string"));
     //$attribs = array("a",'b','c','d','e', array('f', array('g', array('h'))));
@@ -161,8 +161,8 @@ if ($PHPLibConfig->debug) {
     debug( $div("Wow!!!", "class='nope'"), "PHPLIB\Closures\String::MarkupElement(\"div\", \"class='yeah'\")(\"Wow!!!\", \"class='nope'\");" );
     /**/
 
-    
-    
+
+
     /* Closure namespace tests */
     Utility::loadLib(array('closures','hash'));
     $testVar = array(
@@ -175,18 +175,18 @@ if ($PHPLibConfig->debug) {
     $testVar( PHPLIB\Closures\Hash::$REMOVE, "one" );
     debug( $testVar(), "\$testVar after Hash-enclosed and 'one' removed" );
     /**/
-    
-    
-    
+
+
+
     /* Data namespace tests */
     Utility::loadLib(array('data','connection.class'));
     $conn = new PHPLIB\Connection();
     $conn->Host('localhost2');
     debug( $conn->Settings(), "PHPLIB\Connection->Settings()" );
     /**/
-    
-    
-    
+
+
+
     /* Timer tests */
     if ($PHPLibConfig->timer) {
         //$startTime = (int)$_SERVER['REQUEST_TIME'];
@@ -201,11 +201,10 @@ if ($PHPLibConfig->debug) {
         /* */
     }
     /**/
-    
+
     /* Script's end, spit out log */
     Utility::log("script's end");
     debug( Utility::log(), "Utility::log()" );
     /**/
 }
 
-?>

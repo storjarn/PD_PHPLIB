@@ -226,6 +226,14 @@ class Utility /*extends Singleton */ {
         return $return;
     }
 
+    //====================================================================================
+    //  Time stuff
+    //====================================================================================
+
+    public static function unixTimestamp() {
+        return round(microtime(true) * 1000);
+    }
+
     public static function duration($secs) {
 
         $vals = array('w' => (int) ($secs / 86400 / 7),
@@ -244,8 +252,6 @@ class Utility /*extends Singleton */ {
         }
 
         return join(' ', $ret);
-        break;
-
     }
 
 
@@ -375,6 +381,24 @@ class Utility /*extends Singleton */ {
 
     public static function referer() {
         return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : EMPTYSTRING;
+    }
+
+//http://codular.com/curl-with-php
+    public static function request($url) {
+        // Get cURL resource
+        $curl = curl_init();
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $url,
+            CURLOPT_USERAGENT => 'PD_PHPLIB Request Agent'
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        // Close request to clear up some resources
+        curl_close($curl);
+
+        return $resp;
     }
 
 
